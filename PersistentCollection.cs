@@ -591,12 +591,32 @@ namespace Collection
 
         public int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            int index = -1;
+            for (int i = 0; i < _size; ++i)
+            {
+                T value = (T)Read(_path, _name, i);
+                if (item.Equals(value))
+                {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
         }
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            bool match = false;
+            for (int i = 0; i < _size; ++i)
+            {
+                T value = (T)Read(_path, _name, i);
+                if (item.Equals(value))
+                {
+                    match = true;
+                    break;
+                }
+            }
+            return match;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
