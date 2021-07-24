@@ -129,7 +129,7 @@ namespace Collection
                 object data = null;
                 lock (_lockObject)
                 {
-                    if (index < _size)
+                    if ((index >=0) && (index < _size))
                     {
                         Type ParameterType = typeof(T);
                         string filenamePath = System.IO.Path.Combine(_path, _name);
@@ -170,7 +170,7 @@ namespace Collection
 
                 lock (_lockObject)
                 {
-                    if (index < _size)
+                    if ((index >= 0) && (index < _size))
                     {
                         Type ParameterType = typeof(T);
                         string filenamePath = System.IO.Path.Combine(_path, _name);
@@ -433,7 +433,7 @@ namespace Collection
         public void RemoveAt(int index)
         {
             string filenamePath = System.IO.Path.Combine(_path, _name);
-            if ((index >= 0) && (index <= _size))
+            if ((index >= 0) && (index < _size))
             {
                 lock (_lockObject)
                 {
@@ -489,7 +489,7 @@ namespace Collection
 
         public void Insert(int index, T item)
         {
-            if ((index >= 0) && (index <= _size))
+            if ((index >= 0) && (index < _size))
             {
                 Write(_path, _name, index, item);
             }
