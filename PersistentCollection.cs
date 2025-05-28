@@ -5,7 +5,9 @@ using System.IO;
 
 namespace Collection
 {
-    class PersistentCollection<T> : ICollection<T>, IEnumerator<T>, IList<T>
+
+    //IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable, IList, ICollection, IReadOnlyList<T>, IReadOnlyCollection<T>
+    class PersistentCollection<T> : ICollection<T>, IEnumerator<T>, IList<T> //, IEnumerable, IList, ICollection
     {
         // Create a collection of values that is actually a file
         // Need to consider locking as read and writes may conflict
@@ -85,7 +87,7 @@ namespace Collection
         }
 
         #endregion
-        #region Proprties
+        #region Properties
 
         public int Count
         {
@@ -164,8 +166,8 @@ namespace Collection
             {
                 // Need to update the item at the index
                 // This is more complex for strings if the new string is longer than the
-                // available space from the previous string. Just occred to me that 
-                // might be a good idea to store the orinal length or space as new 
+                // available space from the previous string. Just occurred to me that 
+                // might be a good idea to store the original length or space as new 
                 // strings might end of getting shorter and shorter
 
                 lock (_lockObject)
@@ -221,7 +223,7 @@ namespace Collection
 
                                 // Write the data
 
-                                // Appending will only work if the file is deleated and the updates start again
+                                // Appending will only work if the file is deleted and the updates start again
                                 // Not sure if this is the best approach.
                                 // With strings might have to do the write first and then update the pointer.
 
@@ -313,7 +315,7 @@ namespace Collection
 
                 // Write the data
 
-                // Appending will only work if the file is deleated and the updates start again
+                // Appending will only work if the file is deleted and the updates start again
                 // Not sure if this is the best approach.
                 // With strings might have to do the write first and then update the pointer.
 
@@ -344,11 +346,11 @@ namespace Collection
                 Type ParameterType = typeof(T);
 
                 // Logic is probably to open the index
-                // work through this and identify the data position in the file (note zero means that data is delted)
+                // work through this and identify the data position in the file (note zero means that data is deleted)
                 // read the data
                 // check if the data matches
                 // remove the data
-                // update the index file by removing the refernce
+                // update the index file by removing the reference
 
                 object data;
                 BinaryReader binaryReader = new BinaryReader(new FileStream(filenamePath + ".bin", FileMode.Open));
@@ -407,7 +409,7 @@ namespace Collection
                     indexReader = new BinaryReader(stream);
                     BinaryWriter indexWriter = new BinaryWriter(stream);
 
-                    // copy the ponter and length data downwards 
+                    // copy the pointer and length data downwards 
 
                     for (int counter = index; counter < _size; counter++)
                     {
@@ -464,7 +466,7 @@ namespace Collection
                     indexReader = new BinaryReader(stream);
                     BinaryWriter indexWriter = new BinaryWriter(stream);
 
-                    // copy the ponter and length data downwards 
+                    // copy the pointer and length data downwards 
 
                     for (int counter = index; counter < _size; counter++)
                     {
@@ -568,22 +570,22 @@ namespace Collection
                     // TODO: dispose managed state (managed objects)
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: free unmanaged resources (unmanaged objects) and override finalize
                 // TODO: set large fields to null
                 disposedValue = true;
             }
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // // TODO: override finalize only if 'Dispose(bool disposing)' has code to free unmanaged resources
         // ~PersistentQueue()
         // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     // Do not change this code. Put clean-up code in 'Dispose(bool disposing)' method
         //     Dispose(disposing: false);
         // }
 
         void IDisposable.Dispose()
         {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            // Do not change this code. Put clean-up code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
@@ -643,7 +645,7 @@ namespace Collection
             {
                 // Need to delete both data and index
                 File.Delete(filenamePath + ".bin");
-                // Assumption here is the the index also exists
+                // Assumption here is the index also exists
                 File.Delete(filenamePath + ".idx");
                 Reset(path, filename);
             }
@@ -711,7 +713,7 @@ namespace Collection
 
                 // Write the data
 
-                // Appending will only work if the file is deleated and the updates start again
+                // Appending will only work if the file is deleted and the updates start again
                 // Not sure if this is the best approach.
                 // With strings might have to do the write first and then update the pointer.
 
@@ -745,7 +747,7 @@ namespace Collection
                 binaryWriter.Write((UInt16)(_pointer + offset));               // Write the pointer
                 binaryWriter.Close();
 
-                // need to insert the ponter as a new entry in the index
+                // need to insert the pointer as a new entry in the index
 
                 FileStream stream = new FileStream(filenamePath + ".idx", FileMode.Open, FileAccess.ReadWrite, FileShare.None);
                 BinaryReader indexReader = new BinaryReader(stream);
